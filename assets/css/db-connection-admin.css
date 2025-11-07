@@ -1,0 +1,38 @@
+.wp-list-table .status-success {
+    color: #0a8a00;
+    font-weight: 600;
+}
+
+.wp-list-table .status-error {
+    color: #c92c2c;
+    font-weight: 600;
+}
+
+.db-connection-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1em 0;
+}
+
+.db-connection-table th,
+.db-connection-table td {
+    border: 1px solid #ddd;
+    padding: 6px 10px;
+    text-align: left;
+}
+
+.db-connection-pre {
+    background: #f6f6f6;
+    padding: 10px;
+    overflow: auto;
+    margin: 1em 0;
+}
+
+.db-connection-options {
+    margin: 0;
+    padding: 8px;
+    background: #f8f8f8;
+    border: 1px solid #ddd;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
