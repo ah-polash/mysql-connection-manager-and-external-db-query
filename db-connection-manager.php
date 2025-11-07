@@ -136,19 +136,39 @@ class DB_Connection_Manager {
             </button>
             <span id="db-connection-test-result" style="margin-left:10px;"></span>
         </p>
-        <?php if ( ! empty( $values['status'] ) ) : ?>
-            <p>
-                <strong><?php esc_html_e( 'Last Status:', 'db-connection-manager' ); ?></strong>
-                <?php echo esc_html( ucfirst( $values['status'] ) ); ?>
-                <?php if ( ! empty( $values['status_message'] ) ) : ?>
-                    &mdash; <?php echo esc_html( $values['status_message'] ); ?>
-                <?php endif; ?>
-                <?php if ( ! empty( $values['status_updated'] ) ) : ?>
-                    <br />
-                    <small><?php printf( esc_html__( 'Updated: %s', 'db-connection-manager' ), esc_html( date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), intval( $values['status_updated'] ) ) ) ); ?></small>
-                <?php endif; ?>
-            </p>
-        <?php endif; ?>
+        <p class="db-connection-status-summary">
+            <strong><?php esc_html_e( 'Last Status:', 'db-connection-manager' ); ?></strong>
+            <?php
+            $status_class = ! empty( $values['status'] ) ? 'status-' . sanitize_html_class( $values['status'] ) : '';
+            ?>
+            <span id="db-connection-last-status-text" class="db-connection-status-value <?php echo esc_attr( $status_class ); ?>">
+                <?php
+                if ( ! empty( $values['status'] ) ) {
+                    echo esc_html( ucfirst( $values['status'] ) );
+                } else {
+                    esc_html_e( 'Not checked yet.', 'db-connection-manager' );
+                }
+                ?>
+            </span>
+            <span id="db-connection-last-status-message">
+                <?php
+                if ( ! empty( $values['status_message'] ) ) {
+                    echo ' &mdash; ' . esc_html( $values['status_message'] );
+                }
+                ?>
+            </span>
+            <br />
+            <small id="db-connection-last-status-updated">
+                <?php
+                if ( ! empty( $values['status_updated'] ) ) {
+                    printf(
+                        esc_html__( 'Updated: %s', 'db-connection-manager' ),
+                        esc_html( date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), intval( $values['status_updated'] ) ) )
+                    );
+                }
+                ?>
+            </small>
+        </p>
         <?php
     }
 
@@ -220,6 +240,12 @@ class DB_Connection_Manager {
                     'checking' => __( 'Checking…', 'db-connection-manager' ),
                     'success'  => __( 'Connection established.', 'db-connection-manager' ),
                     'failure'  => __( 'Connection failed.', 'db-connection-manager' ),
+                    'notChecked' => __( 'Not checked yet.', 'db-connection-manager' ),
+                    'lastChecked' => __( 'Updated: %s', 'db-connection-manager' ),
+                    'statuses' => [
+                        'success' => __( 'Success', 'db-connection-manager' ),
+                        'error'   => __( 'Error', 'db-connection-manager' ),
+                    ],
                 ],
             ] );
         }
@@ -254,11 +280,14 @@ class DB_Connection_Manager {
 
         $creds['options'] = $normalized_options;
 
-        $result = $this->test_connection( $creds );
+        $result    = $this->test_connection( $creds );
+        $timestamp = time();
 
         update_post_meta( $post_id, '_db_connection_status', $result['status'] );
         update_post_meta( $post_id, '_db_connection_status_message', $result['message'] );
-        update_post_meta( $post_id, '_db_connection_status_updated', time() );
+        update_post_meta( $post_id, '_db_connection_status_updated', $timestamp );
+
+        $result['checked_at'] = $timestamp;
 
         if ( $result['success'] ) {
             wp_send_json_success( $result );
@@ -383,7 +412,7 @@ class DB_Connection_Manager {
                         echo '<br /><small>' . esc_html( $values['status_message'] ) . '</small>';
                     }
                 } else {
-                    esc_html_e( 'Not checked', 'db-connection-manager' );
+                    esc_html_e( 'Not checked yet.', 'db-connection-manager' );
                 }
                 break;
             case 'updated':

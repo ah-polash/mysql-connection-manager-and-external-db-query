@@ -4,8 +4,8 @@ WordPress plugin that registers a **DB Connection** custom post type so administ
 
 ## Features
 - Custom post type "DB Connection" with meta fields for host, port, username, password, database/auth source and additional JSON options.
-- Inline "Test Connection" button to validate credentials using AJAX, with feedback for JSON mistakes.
-- Connection status, metadata and options displayed in the admin list table for quick review.
+- Inline "Test Connection" button to validate credentials using AJAX, with feedback for JSON mistakes and real-time status refresh in the editor.
+- Connection status, metadata and options displayed in the admin list table for quick review, including the latest check timestamp.
 - Automatic LIMIT injection for MySQL queries (unless you provide one) to help avoid runaway result sets.
 - Shortcode `[external_db_query]` to run read-only queries against the external database and render the result on the front-end.
 

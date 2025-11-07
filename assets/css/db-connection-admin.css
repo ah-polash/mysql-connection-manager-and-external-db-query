@@ -1,9 +1,11 @@
-.wp-list-table .status-success {
+.wp-list-table .status-success,
+.db-connection-status-value.status-success {
     color: #0a8a00;
     font-weight: 600;
 }
 
-.wp-list-table .status-error {
+.wp-list-table .status-error,
+.db-connection-status-value.status-error {
     color: #c92c2c;
     font-weight: 600;
 }
