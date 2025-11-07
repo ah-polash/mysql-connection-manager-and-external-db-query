@@ -8,7 +8,7 @@ Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Manage external database connections (MySQL and MongoDB) from the WordPress admin and run read-only queries from posts and pages with a shortcode.
+Manage external database connections (MySQL and MongoDB) from WordPress and run read-only queries from posts and pages with a shortcode.
 
 == Description ==
 DB Connection Manager lets administrators register external MySQL or MongoDB instances as a dedicated "DB Connection" custom post type. Each connection stores the server credentials, optional JSON options, and the latest test status so editors can safely reuse approved credentials across the site.
